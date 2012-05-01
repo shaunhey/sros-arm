@@ -1,6 +1,6 @@
 ODIR = ./obj
 SDIR = ./src
-OBJS = $(ODIR)/start.o $(ODIR)/main.o $(ODIR)/uart.o
+OBJS = $(ODIR)/start.o $(ODIR)/main.o $(ODIR)/uart.o $(ODIR)/misc.o
 CC = arm-elf-gcc
 CFLAGS = -Wall -Wextra -Werror -nostdlib -nostartfiles -ffreestanding -std=gnu99 -c
 INCLUDE = ./include
@@ -16,6 +16,9 @@ $(ODIR)/main.o: $(SDIR)/kernel/main.c
 
 $(ODIR)/uart.o: $(SDIR)/kernel/uart.c
 	$(CC) $(CFLAGS) $(SDIR)/kernel/uart.c -o $(ODIR)/uart.o -I$(INCLUDE)
+
+$(ODIR)/misc.o: $(SDIR)/kernel/misc.c
+	$(CC) $(CFLAGS) $(SDIR)/kernel/misc.c -o $(ODIR)/misc.o -I$(INCLUDE)
 
 bin/kernel: $(OBJS)
 	arm-elf-ld -T $(SDIR)/kernel/link.ld -o bin/kernel $(OBJS)

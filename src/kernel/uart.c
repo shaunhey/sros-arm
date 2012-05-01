@@ -13,4 +13,6 @@ void uart0_puts(char *s)
 {
 	// Write characters one at a time until we hit a null
 	while (*s) { uart0_putc(*s++); }
+
+	uart0_putc('\n');
 }
