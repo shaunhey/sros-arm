@@ -1,23 +1,26 @@
 #include "uart.h"
 #include "misc.h"
+#include "video.h"
 
 typedef void (*puts_fn)(char *);
-puts_fn puts;
-
-void init()
-{
-	puts = uart0_puts;
-}
+const puts_fn puts = uart0_puts;
 
 int main (void)
 {
-	char szTest[8] = {0x12, 0x34, 0x56, 0x78, 0x90, 0xAB, 0xCD, 0xEF};
-	char szUnpacked[17] = {0};
-	init();
-    puts("sros-arm booting...");
-	_unpack(szUnpacked, szTest, 8);
-	puts(szUnpacked);
+	puts("Debug Console ACTIVE\n");
+	puts("sros-arm 0.1\n------------\n");
 
-	
+	puts("Initializing video...");
+	init_video();	
+	puts("Done!\n");
+
+	puts("Begin framebuffer cycle demo...");
+	color_cycle_demo(1);
+	puts("Done!\n");
+
+	puts("Showing color bars...");
+	show_color_bars();
+	puts("Done!\n");
+
     return 0;
 }

@@ -1,7 +1,5 @@
 #include "misc.h"
 
-
-
 void _unpack(char *dest, char *src, int len)
 {
         char chars[] = "0123456789ABCDEF";
@@ -21,12 +19,44 @@ void _unpack(char *dest, char *src, int len)
 
 void *memcpy(void *dest, void *src, size_t len)
 {
+	if (len > sizeof(uint32_t))
+	{
+		size_t chunks = len / sizeof(uint32_t);
+
+		// block copy
+		for (size_t i = 0; i < chunks; i++)
+		{
+			*((uint32_t *)dest+i) = *((uint32_t *)src+i);
+		}
+
+		// remainder
+		if (len % sizeof(uint32_t) != 0)
+		{
+			for (size_t i = (chunks * sizeof(uint32_t)); i < len; i++)
+			{
+				*((uint8_t *)dest+i) = *((uint8_t *)src+i);
+			}
+		}
+	}
+	else
+	{
+		for (size_t i = 0; i < len; i++)
+		{
+			*((uint8_t *)dest+i) = *((uint8_t *)src+i);
+		}
+	}
+
+	return dest;
+}
+
+void *memset(void *ptr, char value, size_t len)
+{
 	size_t i = 0;
 
 	for (i = 0; i < len; i++)
 	{
-		*((char *)dest+i) = *((char *)src+i);
+		*((char *)ptr+i) = value;
 	}
 
-	return dest;
+	return ptr;
 }
