@@ -32,4 +32,6 @@ void _unpack(char *dest, char *src, int len);
 void *memcpy(void *dest, void *src, size_t len);
 void *memset(void *ptr, char value, size_t len);
 
+#define DBG(x) uart0_puts(x)
+
 #endif

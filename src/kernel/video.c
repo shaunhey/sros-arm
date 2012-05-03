@@ -20,17 +20,25 @@
 
 #include "video.h"
 
+static int screen_height;
+static int screen_width;
+
+static PL110_REGS *video_registers;
+
 // Initialize the framebuffer device
 void init_video()
 {
-	PL110_REGS *videoRegisters = (PL110_REGS *)PL110_REGS_BASE;
+	video_registers = (PL110_REGS *)PL110_REGS_BASE;
 
-	videoRegisters->LCDTiming0 = 0x3F1F3F9C;
-	videoRegisters->LCDTiming1 = 0x080B61DF;
-	videoRegisters->LCDTiming2 = 0x067F3800;
+	video_registers->LCDTiming0 = 0x3F1F3F9C;
+	video_registers->LCDTiming1 = 0x080B61DF;
+	video_registers->LCDTiming2 = 0x067F3800;
 
-	videoRegisters->LCDUPBASE  = PL110_FRAMEBUFFER;
-	videoRegisters->LCDControl = 0x00001829;
+	video_registers->LCDUPBASE  = PL110_FRAMEBUFFER;
+	video_registers->LCDControl = 0x00001829;
+
+	screen_width  = 640;
+	screen_height = 480;
 }
 
 // Paint a rectangle to the framebuffer device
@@ -50,7 +58,7 @@ void paint_rect(rect r, rgba color)
 	{
 		for (short x = r.x1; x < r.x2; x++)
 		{
-			addr[(VIDEO_WIDTH*y)+x] = color_value;
+			addr[(screen_width*y)+x] = color_value;
 		}
 	}
 }
@@ -61,8 +69,8 @@ void color_cycle_demo(int count)
 	rect r;
 	r.x1 = 0;
 	r.y1 = 0;
-	r.x2 = VIDEO_WIDTH;
-	r.y2 = VIDEO_HEIGHT;
+	r.x2 = screen_width;
+	r.y2 = screen_height;
 
 	rgba color;
 
@@ -122,8 +130,8 @@ void show_color_bars()
 
 	r.x1 = 0;
 	r.y1 = 0;
-	r.x2 = VIDEO_WIDTH / 7;
-	r.y2 = (VIDEO_HEIGHT / 3) * 2;
+	r.x2 = screen_width / 7;
+	r.y2 = (screen_height / 3) * 2;
 
 	paint_rect(r, color);
 
@@ -132,10 +140,10 @@ void show_color_bars()
 	color.green = 180;
 	color.blue  = 16;
 
-	r.x1 = (VIDEO_WIDTH / 7);
+	r.x1 = (screen_width / 7);
 	r.y1 = 0;
-	r.x2 = (VIDEO_WIDTH / 7) * 2;
-	r.y2 = (VIDEO_HEIGHT / 3) * 2;
+	r.x2 = (screen_width / 7) * 2;
+	r.y2 = (screen_height / 3) * 2;
 
 	paint_rect(r, color);
 
@@ -144,10 +152,10 @@ void show_color_bars()
 	color.green = 180;
 	color.blue  = 180;
 
-	r.x1 = (VIDEO_WIDTH / 7) * 2;
+	r.x1 = (screen_width / 7) * 2;
 	r.y1 = 0;
-	r.x2 = (VIDEO_WIDTH / 7) * 3;
-	r.y2 = (VIDEO_HEIGHT / 3) * 2;
+	r.x2 = (screen_width / 7) * 3;
+	r.y2 = (screen_height / 3) * 2;
 
 	paint_rect(r, color);
 
@@ -156,10 +164,10 @@ void show_color_bars()
 	color.green = 180;
 	color.blue  = 16;
 
-	r.x1 = (VIDEO_WIDTH / 7) * 3;
+	r.x1 = (screen_width / 7) * 3;
 	r.y1 = 0;
-	r.x2 = (VIDEO_WIDTH / 7) * 4;
-	r.y2 = (VIDEO_HEIGHT / 3) * 2;
+	r.x2 = (screen_width / 7) * 4;
+	r.y2 = (screen_height / 3) * 2;
 
 	paint_rect(r, color);
 
@@ -168,10 +176,10 @@ void show_color_bars()
 	color.green = 16;
 	color.blue  = 180;
 
-	r.x1 = (VIDEO_WIDTH / 7) * 4;
+	r.x1 = (screen_width / 7) * 4;
 	r.y1 = 0;
-	r.x2 = (VIDEO_WIDTH / 7) * 5;
-	r.y2 = (VIDEO_HEIGHT / 3) * 2;
+	r.x2 = (screen_width / 7) * 5;
+	r.y2 = (screen_height / 3) * 2;
 
 	paint_rect(r, color);
 
@@ -180,10 +188,10 @@ void show_color_bars()
 	color.green = 16;
 	color.blue  = 16;
 
-	r.x1 = (VIDEO_WIDTH / 7) * 5;
+	r.x1 = (screen_width / 7) * 5;
 	r.y1 = 0;
-	r.x2 = (VIDEO_WIDTH / 7) * 6;
-	r.y2 = (VIDEO_HEIGHT / 3) * 2;
+	r.x2 = (screen_width / 7) * 6;
+	r.y2 = (screen_height / 3) * 2;
 
 	paint_rect(r, color);
 
@@ -192,10 +200,10 @@ void show_color_bars()
 	color.green = 16;
 	color.blue  = 180;
 
-	r.x1 = (VIDEO_WIDTH / 7) * 6;
+	r.x1 = (screen_width / 7) * 6;
 	r.y1 = 0;
-	r.x2 = VIDEO_WIDTH;
-	r.y2 = (VIDEO_HEIGHT / 3) * 2;
+	r.x2 = screen_width;
+	r.y2 = (screen_height / 3) * 2;
 
 	paint_rect(r, color);
 

@@ -26,9 +26,6 @@
 #define PL110_REGS_BASE		0xC0000000
 #define	PL110_FRAMEBUFFER	0x00200000
 
-#define VIDEO_WIDTH			640
-#define VIDEO_HEIGHT		480
-
 typedef struct 
 {
 	volatile uint32_t LCDTiming0;
