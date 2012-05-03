@@ -7,5 +7,5 @@ then
 	exit 1
 fi
 
-qemu-system-arm -m 128 -kernel bin/kernel -serial stdio
+qemu-system-arm -m 128 -kernel bin/kernel -serial stdio -sd ../sdcard.img
 
